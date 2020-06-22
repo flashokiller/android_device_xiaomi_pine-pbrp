@@ -34,9 +34,9 @@ PRODUCT_COPY_FILES += \
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE	:= pine
 PRODUCT_NAME	:= omni_pine
-PRODUCT_BRAND	:= Xiaomi
+PRODUCT_BRAND	:= xiaomi
 PRODUCT_MODEL	:= Redmi 7A
-PRODUCT_MANUFACTURER := Xiaomi
+PRODUCT_MANUFACTURER := xiaomi
 
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := false
 
