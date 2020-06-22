@@ -34,6 +34,7 @@ TARGET_KERNEL_HEADER_ARCH := arm
 TARGET_KERNEL_SOURCE := kernel/xiaomi/pine
 TARGET_KERNEL_CONFIG := pine-perf_defconfig
 
+TARGET_PREBUILT_KERNEL := device/xiaomi/pine/kernel
 TARGET_RECOVERY_FSTAB := device/xiaomi/pine/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
