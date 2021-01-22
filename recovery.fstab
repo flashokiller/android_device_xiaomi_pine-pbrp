@@ -1,11 +1,11 @@
 # Userdata
-/data             ext4     /dev/block/bootdevice/by-name/userdata     flags=backup=1;wipeingui;encryptable=footer
+/data             ext4     /dev/block/bootdevice/by-name/userdata     flags=fileencryption=ice:aes-256-cts;backup=1;wipeingui
 
 # Cache
 /cache            ext4     /dev/block/bootdevice/by-name/cache        flags=backup=1;wipeingui;wipeduringfactoryreset
 
 # System
-/system_root      ext4     /dev/block/bootdevice/by-name/system       flags=backup=1;wipeingui;display="System"
+/system_root           ext4     /dev/block/bootdevice/by-name/system       flags=backup=1;wipeingui;display="System"
 /system_image     emmc     /dev/block/bootdevice/by-name/system       flags=backup=1;flashimg=1;display="System Image"
 
 # Boot-Aboot-Recovery
@@ -61,6 +61,5 @@
 /dtbo             emmc     /dev/block/bootdevice/by-name/dtbo         flags=display="dtbo";backup=1;flashimg=1
 
 # Removable storage
-/usb_otg          auto     /dev/block/sda1         /dev/block/sda     flags=display="USB OTG";storage;removable;wipeingui
+/usb-otg          auto     /dev/block/sda1         /dev/block/sda     flags=display="USB OTG";storage;removable;wipeingui
 /external_sd      auto     /dev/block/mmcblk1p1                       flags=display="External SD";storage;removable;wipeingui
-     

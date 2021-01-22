@@ -1,78 +1,157 @@
-TARGET_NO_BOOTLOADER := true
-TARGET_BOOTLOADER_BOARD_NAME := MSM8937
-TARGET_BOARD_PLATFORM := msm8937
+#
+# Copyright 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
-TARGET_ARCH := arm
+# This contains the module build definitions for the hardware-specific
+# components for this device.
+#
+# As much as possible, those components should be built unconditionally,
+# with device-specific names to avoid collisions, to avoid device-specific
+# bitrot and build breakages. Building a component unconditionally does
+# *not* include it on all devices, so it is safe even with hardware-specific
+# components.
+
+PLATFORM_PATH := device/xiaomi/pine
+
+LC_ALL=C
+ALLOW_MISSING_DEPENDENCIES=true
+
+# Architecture
+TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_VARIANT := cortex-a53
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := cortex-a53
+
+TARGET_BOARD_PLATFORM := sdm439
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno505
+
+TARGET_BOARD_SUFFIX := _64
+TARGET_USES_64_BIT_BINDER := true
+
+# Bootloader
+TARGET_NO_BOOTLOADER := true
+TARGET_BOOTLOADER_BOARD_NAME := msm8937
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x4000000
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x4000000
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0xc0000000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x2573fbe00
-BOARD_CACHEIMAGE_PARTITION_SIZE := 0x10000000
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x100000000
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x550647000
+BOARD_CACHEIMAGE_PARTITION_SIZE := 0x18000000
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 0x2000000
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
-# Kernel
-BOARD_KERNEL_BASE := 0x80000000
+# Cmdline
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8
-BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0 androidboot.hardware=qcom user_debug=30 msm_rtb.filter=0x237 ehci-hcd.park=3
-BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.sdhci androidboot.usbconfigfs=true androidboot.selinux=permissive androidboot.configfs=true
-BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 earlycon=msm_hsl_uart,0x78B0000 vmalloc=300M firmware_class.path=/vendor/firmware_mnt/image  loop.max_part=7 
+BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 
+BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.sdhci earlycon=msm_serial_dm,0x78B0000 firmware_class.path=/vendor/firmware_mnt/image 
+BOARD_KERNEL_CMDLINE += androidboot.usbconfigfs=true loop.max_part=7
+#BOARD_KERNEL_CMDLINE += android.boot.selinux=permissive
+
+# Kernel
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+TARGET_PREBUILT_KERNEL := $(PLATFORM_PATH)/prebuilt/kernel
+BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-BOARD_KERNEL_IMAGE_NAME := zImage-dtb
-TARGET_KERNEL_VERSION := 4.9
-TARGET_KERNEL_ARCH := arm
-TARGET_KERNEL_HEADER_ARCH := arm
-TARGET_KERNEL_SOURCE := kernel/xiaomi/pine
-TARGET_KERNEL_CONFIG := pine-perf_defconfig
 
-TARGET_PREBUILT_KERNEL := device/xiaomi/pine/kernel
-TARGET_RECOVERY_FSTAB := device/xiaomi/pine/recovery.fstab
+# Fstab
+TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/recovery.fstab
+
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_pine
+TARGET_RECOVERY_DEVICE_MODULES := libinit_pine
+TARGET_PLATFORM_DEVICE_BASE := /devices/soc/
+
+# OTA
+TARGET_OTA_ASSERT_DEVICE := pine
+
+# QCOM Stuff
+BOARD_USES_QCOM_HARDWARE := true
+
+# AVB
+BOARD_AVB_ENABLE := true
+BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+
+# Filesystem
+TARGET_USERIMAGES_USE_F2FS := true
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Crypto
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
+
+# TWRP Stuff
+BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-
-# TWRP
 TW_THEME := portrait_hdpi
-TW_NO_EXFAT := true
-TW_NO_EXFAT_FUSE := true
 TW_USE_TOOLBOX := true
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_DEVICE_VERSION := 1 (by AndroJr7)
+HAVE_SELINUX := true
+RECOVERY_SDCARD_ON_DATA := true
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_NO_LEGACY_PROPS := true
+TW_EXTRA_LANGUAGES := true
+TW_INCLUDE_NTFS_3G := true
 TW_SCREEN_BLANK_ON_BOOT := false
-TW_EXTRA_LANGUAGES := false
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_HAS_EDL_MODE := true
-TW_SKIP_COMPATIBILITY_CHECK := true
+TW_NO_USB_STORAGE := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_MAX_BRIGHTNESS := 2047
+TW_DEFAULT_BRIGHTNESS := 489
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 
-RECOVERY_SDCARD_ON_DATA := true
-BOARD_HAS_NO_REAL_SDCARD := true
-
-# Qualcomm support
-BOARD_USES_QCOM_HARDWARE := true
-TARGET_RECOVERY_QCOM_RTC_FIX := true
-
-# Recovery
-TARGET_USERIMAGES_USE_EXT4 := true
-
-# Android Verified Boot
-BOARD_AVB_ENABLE := false
-BOARD_BUILD_DISABLED_VBMETAIMAGE := true
-
-# Encryption
-PLATFORM_SDK_VERSION := 28
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_FBE := true
-TW_CRYPTO_USE_SYSTEM_VOLD := false
-TARGET_HW_DISK_ENCRYPTION := false
-TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+# Show build time on the splash screen
+TW_DEVICE_VERSION=$(shell date '+%Y%m%d')-@AOiSPdev
 
 # Hack: prevent anti rollback
-PLATFORM_SECURITY_PATCH := 2099-12-31
+PLATFORM_SECURITY_PATCH := 2025-12-31
+
+# Platform version
+PLATFORM_VERSION := 16.1.0
+
+# SAR
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true //set is system.prop
+BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
+BOARD_SUPPRESS_SECURE_ERASE := true
+
+# Treble
+BOARD_NEEDS_VENDORIMAGE_SYMLINK := false
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+
+# PBRP stuff
+PB_DISABLE_DEFAULT_TREBLE_COMP := true
+PB_DISABLE_DEFAULT_DM_VERITY := true
+PB_TORCH_PATH := "/sys/class/leds/led:torch_0"

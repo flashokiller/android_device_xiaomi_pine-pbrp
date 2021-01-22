@@ -14,7 +14,8 @@ jobs:
       BUILD_LUNCH: 'omni_pine-eng'
       PB_OFFICIAL: 'true'
       CHANGELOG: |
-        - Fixed auto reboot from pb splash screen
+        - initial 64bit build
+        - Added nano & bash
     working_directory: /home/builder/pitchblack
     steps:
       - run:
