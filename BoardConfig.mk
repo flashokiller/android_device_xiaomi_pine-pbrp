@@ -151,7 +151,20 @@ BOARD_NEEDS_VENDORIMAGE_SYMLINK := false
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
-# PBRP stuff
-PB_DISABLE_DEFAULT_TREBLE_COMP := true
-PB_DISABLE_DEFAULT_DM_VERITY := true
-PB_TORCH_PATH := "/sys/class/leds/led:torch_0"
+# SHRP
+
+SHRP_PATH := device/xiaomi/pine
+SHRP_MAINTAINER := flashokiller
+SHRP_DEVICE_CODE := ysl
+SHRP_EDL_MODE := 1
+SHRP_EXTERNAL := /sdcard1
+SHRP_INTERNAL := /sdcard
+SHRP_OTG := /usb_otg
+SHRP_FLASH := 1
+SHRP_REC := /dev/block/bootdevice/by-name/recovery
+SHRP_AB := true
+SHRP_REC_TYPE := Treble
+SHRP_DEVICE_TYPE := A_Only
+SHRP_DARK := true
+SHRP_EXPRESS := true
+SHRP_OFFICIAL := false
