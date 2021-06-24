@@ -71,14 +71,15 @@ BOARD_KERNEL_CMDLINE += androidboot.usbconfigfs=true loop.max_part=7
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-TARGET_PREBUILT_KERNEL := $(PLATFORM_PATH)/prebuilt/kernel
-TARGET_KERNEL_CONFIG := pine-perf_defconfig
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 
+TARGET_PREBUILT_KERNEL := device/xiaomi/pine/prebuilt/kernel
+TARGET_RECOVERY_FSTAB := device/xiaomi/pine/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 # Fstab
 TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/recovery.fstab
 
@@ -132,9 +133,6 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 489
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-
-# Show build time on the splash screen
-TW_DEVICE_VERSION=$(shell date '+%Y%m%d')-@AOiSPdev
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2025-12-31
