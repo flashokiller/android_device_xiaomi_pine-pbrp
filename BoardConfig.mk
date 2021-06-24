@@ -154,7 +154,7 @@ TARGET_COPY_OUT_VENDOR := vendor
 
 SHRP_PATH := device/xiaomi/pine
 SHRP_MAINTAINER := flashokiller
-SHRP_DEVICE_CODE := ysl
+SHRP_DEVICE_CODE := pine
 SHRP_EDL_MODE := 1
 SHRP_EXTERNAL := /sdcard1
 SHRP_INTERNAL := /sdcard
